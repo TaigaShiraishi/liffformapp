@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせフォーム</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+</head>
+<body>
+
+    <form class="w-75 mx-auto">
+        <p class="mt-3">お名前【フルネーム】</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="fullname" placeholder="例: 山田 太郎" required>
+        </div>
+        <p class="mt-3">フリガナ（カタカナ）</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="furigana" placeholder="例: ヤマダ タロウ" required>
+        </div>
+        <p class="mt-3">郵便番号</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="zipcode" placeholder="例: 123-4567" required>
+        </div>
+        <p class="mt-3">ご住所</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="address" placeholder="例: 東京都千代田区1-1-1" required>
+        </div>
+        <p class="mt-3">電話番号</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="phone" placeholder="例: 090-1234-5678" required>
+        </div>
+        <p class="mt-3">駐車場の有無</p>
+        <div>
+            <select class="form-control w-100 mt-1" name="parking" required>
+                <option value="">選択してください</option>
+                <option value="あり">あり</option>
+                <option value="なし">なし</option>
+            </select>
+        </div>
+        <p class="mt-3">第一希望日時</p>
+        <div>
+            <input type="datetime-local" class="form-control w-100 mt-1" name="first_preference" required>
+        </div>
+        <p class="mt-3">第二希望日時</p>
+        <div>
+            <input type="datetime-local" class="form-control w-100 mt-1" name="second_preference">
+        </div>
+        <p class="mt-3">第三希望日時</p>
+        <div>
+            <input type="datetime-local" class="form-control w-100 mt-1" name="third_preference">
+        </div>
+        <input type="submit" class="mt-4 btn btn-primary" value="送信">
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js" charset="utf-8"></script>
+    <script>
+        $(document).ready(function() {
+            const liffId = "2006097753-R1QJ2J0z";
+            initializeLiff(liffId);
+        });
+
+        function initializeLiff(liffId) {
+            liff.init({
+                liffId: liffId
+            }).then(() => {
+                // LIFFの初期化成功時の処理
+            }).catch((err) => {
+                console.log('LIFFの初期化に失敗しました', err);
+            });
+        }
+
+        function sendText(text) {
+            liff.sendMessages([{
+                'type': 'text',
+                'text': text
+            }]).then(function() {
+                liff.closeWindow();
+            }).catch(function(error) {
+                window.alert('メッセージの送信に失敗しました: ' + error);
+            });
+        }
+
+        $(function() {
+            $('form').submit(function() {
+                const fullname = $('input[name="fullname"]').val();
+                const furigana = $('input[name="furigana"]').val();
+                const zipcode = $('input[name="zipcode"]').val();
+                const address = $('input[name="address"]').val();
+                const phone = $('input[name="phone"]').val();
+                const parking = $('select[name="parking"]').val();
+                const firstPreference = $('input[name="first_preference"]').val();
+                const secondPreference = $('input[name="second_preference"]').val();
+                const thirdPreference = $('input[name="third_preference"]').val();
+                
+                const message = `お名前: ${fullname}\nフリガナ: ${furigana}\n郵便番号: ${zipcode}\nご住所: ${address}\n電話番号: ${phone}\n駐車場の有無: ${parking}\n第一希望日時: ${firstPreference}\n第二希望日時: ${secondPreference}\n第三希望日時: ${thirdPreference}`;
+                
+                sendText(message);
+                return false;
+            });
+        });
+    </script>
+
+</body>
+</html>
