@@ -99,16 +99,6 @@
             });
         }
 
-        function formatDateTime(dateTime) {
-            const date = new Date(dateTime);
-            const year = date.getFullYear();
-            const month = ("0" + (date.getMonth() + 1)).slice(-2);
-            const day = ("0" + date.getDate()).slice(-2);
-            const hours = ("0" + date.getHours()).slice(-2);
-            const minutes = ("0" + date.getMinutes()).slice(-2);
-            return `${year}年${month}月${day}日 ${hours}時${minutes}分`;
-        }
-
         $(function() {
             $('form').submit(function() {
                 const fullname = $('input[name="fullname"]').val();
@@ -117,9 +107,9 @@
                 const address = $('input[name="address"]').val();
                 const phone = $('input[name="phone"]').val();
                 const parking = $('select[name="parking"]').val();
-                const firstPreference = formatDateTime($('input[name="first_preference"]').val());
-                const secondPreference = formatDateTime($('input[name="second_preference"]').val());
-                const thirdPreference = formatDateTime($('input[name="third_preference"]').val());
+                const firstPreference = $('input[name="first_preference"]').val();
+                const secondPreference = $('input[name="second_preference"]').val();
+                const thirdPreference = $('input[name="third_preference"]').val();
 
                 const message = `お名前: ${fullname}\nフリガナ: ${furigana}\n郵便番号: ${zipcode}\nご住所: ${address}\n電話番号: ${phone}\n駐車場の有無: ${parking}\n第一希望日時: ${firstPreference}\n第二希望日時: ${secondPreference}\n第三希望日時: ${thirdPreference}`;
                 
